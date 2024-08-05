@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${post.title}">게시글 제목</title>
+</head>
+<body>
+<div class="post">
+    <div class="post-title" th:text="${post.title}">게시글 제목</div>
+    <div class="post-date" th:text="${post.modifiedDate}">게시글 날짜</div>
+    <div class="post-content" th:text="${post.content}">게시글 내용</div>
+    <div class="post-views" th:text="'조회수: ' + ${post.views}">조회수</div>
+</div>
+</body>
+</html>

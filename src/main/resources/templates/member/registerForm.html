@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>회원가입</title>
+</head>
+<body>
+<h2>회원가입</h2>
+<form action="/member/register" th:object="${memberDto}" method="post">
+  <label for="username">Username:</label>
+  <input type="text" id="username" th:field="*{username}" required><br><br>
+
+  <label for="password">Password:</label>
+  <input type="password" id="password" th:field="*{password}" required><br><br>
+
+  <label for="phone_number">Phone Number:</label>
+  <input type="tel" id="phone_number" th:field="*{phoneNumber}" required><br><br>
+
+  <label for="address">Address:</label>
+  <textarea id="address" th:field="*{address}" rows="4" cols="50" required></textarea><br><br>
+
+  <input type="submit" value="Submit">
+</form>
+</body>
+</html>

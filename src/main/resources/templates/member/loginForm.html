@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+</head>
+<body>
+<h2>로그인</h2>
+<form action="/member/login" th:object="${memberDto}" method="post">
+    <label for="username">Username:</label>
+    <input type="text" id="username" th:field="*{username}" required><br><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" th:field="*{password}" required><br><br>
+
+    <input type="submit" value="Submit">
+</form>
+</body>
+</html>
