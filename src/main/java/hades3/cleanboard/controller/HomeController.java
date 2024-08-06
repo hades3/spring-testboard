@@ -23,10 +23,11 @@ public class HomeController {
     public String home(HttpServletRequest request, Model model) {
         List<Post> posts = postRepository.findAll();
         model.addAttribute("posts", posts);
-        HttpSession session = request.getSession(false);
-        if (session == null){
-            return "home";
-        }
+
+        HttpSession session = request.getSession();
+//        if (session == null){
+//            return "home";
+//        }
 
         Member loginMember = (Member)session.getAttribute(SessionConst.LOGIN_MEMBER);
 

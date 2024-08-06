@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequiredArgsConstructor
+@Transactional
 public class MemberController {
 
     private final MemberService memberService;
@@ -26,10 +28,9 @@ public class MemberController {
     }
 
     @PostMapping("/member/login")
-    public String login(@ModelAttribute(name = "memberDto") MemberDto memberDto, HttpServletRequest request){
+    public String login(@ModelAttribute(name = "memberDto") MemberDto memberDto, HttpServletRequest request) {
         Member findMember = memberService.tryLogin(memberDto.getUsername(), memberDto.getPassword());
         if (findMember == null){
-            System.out.println("올바르지 않은 회원 정보!");
             return "member/loginForm";
         }
 
@@ -55,7 +56,12 @@ public class MemberController {
 
     @PostMapping("/member/register")
     public String register(@ModelAttribute(name = "memberDto") MemberDto memberDto){
-        memberService.register(memberDto);
+        try{
+            memberService.register(memberDto);
+        }
+        catch (IllegalStateException e){
+            System.out.println(e.getMessage());
+        }
         return "redirect:/";
     }
 

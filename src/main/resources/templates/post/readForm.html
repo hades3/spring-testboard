@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${post.title}">게시글 제목</title>
+</head>
+<body>
+<div class="post">
+    <div class="post-title" th:text="${post.title}">게시글 제목</div>
+    <div class="post-date" th:text="${post.modifiedDate}">게시글 날짜</div>
+    <div class="post-content" th:text="${post.content}">게시글 내용</div>
+    <div class="post-views" th:text="'조회수: ' + ${post.views}">조회수</div>
+    <a th:href="|/posts/${post.id}/modify|">수정</a>
+    <a th:href="|/posts/${post.id}/delete|">삭제</a>
+</div>
+
+<div class="comment">
+    <!-- 댓글 입력 폼 -->
+    <form th:action="|/comments/${post.id}/new|" method="post">
+        <label for="content">댓글:</label>
+        <textarea id="content" name="content" required></textarea>
+        <input type="hidden" name="redirect" th:value="${currentPageUrl}">
+        <button type="submit">댓글 작성</button>
+    </form>
+
+    <!-- 댓글 리스트 -->
+    <ul>
+        <li th:each="comment : ${post.comments}">
+            <strong th:text="${comment.member.username}">Author</strong>: <span th:text="${comment.content}">Comment</span>
+            <a th:href="|/comments/${comment.id}/delete?redirect=${currentPageUrl}|">삭제</a>
+        </li>
+    </ul>
+</div>
+
+</body>
+</html>

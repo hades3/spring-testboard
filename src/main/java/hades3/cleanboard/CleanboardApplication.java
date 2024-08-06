@@ -8,6 +8,7 @@ public class CleanboardApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CleanboardApplication.class, args);
+
 	}
 
 }

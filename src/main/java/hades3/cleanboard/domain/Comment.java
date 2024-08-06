@@ -2,9 +2,11 @@ package hades3.cleanboard.domain;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 public class Comment extends Date {
 
     @Id
@@ -12,14 +14,15 @@ public class Comment extends Date {
     @Column(name = "COMMENT_ID")
     private Long id;
 
-    private String writer;
-
-    private String password;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "MEMBER_ID")
+    private Member member;
 
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "POST_ID")
     private Post post;
+
 
 }

@@ -40,4 +40,9 @@ public class PostRepository {
         return posts;
     }
 
+    public void removeOne(Long id){
+        Post findPost = this.findOne(id);
+        em.remove(findPost);
+    }
+
 }

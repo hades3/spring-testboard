@@ -1,6 +1,5 @@
 package hades3.cleanboard.controller;
 
-import hades3.cleanboard.domain.Date;
 import hades3.cleanboard.domain.Member;
 import hades3.cleanboard.domain.Post;
 import hades3.cleanboard.domain.PostDto;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @RequiredArgsConstructor
+@Transactional
 public class PostController {
     private final EntityManager em;
     private final PostRepository postRepository;
@@ -44,6 +44,52 @@ public class PostController {
     public String readPost(@PathVariable(name = "postId") Long postId, Model model){
         Post post = postService.read(postId);
         model.addAttribute("post", post);
-        return "post/readPost";
+        String currentPageUrl = "/posts/"+postId;
+        model.addAttribute("currentPageUrl", currentPageUrl);
+        return "post/readForm";
+    }
+
+    @GetMapping("/posts/{postId}/delete")
+    public String deletePost(@PathVariable(name = "postId") Long postId, HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if (session == null){
+            System.out.println("로그인이 필요합니다");
+            return "redirect:/member/login";
+        }
+        Member curMember = (Member)session.getAttribute(SessionConst.LOGIN_MEMBER);
+        if (curMember == null){
+            System.out.println("로그인이 필요합니다");
+            return "redirect:/member/login";
+        }
+        postService.delete(postId, curMember.getId());
+
+        return "redirect:/";
+    }
+
+    @GetMapping("/posts/{postId}/modify")
+    public String modifyForm(@PathVariable(name = "postId") Long postId, HttpServletRequest request, Model model){
+        HttpSession session = request.getSession(false);
+        if (session == null){
+            System.out.println("로그인이 필요합니다");
+            return "redirect:/member/login";
+        }
+        Member curMember = (Member)session.getAttribute(SessionConst.LOGIN_MEMBER);
+        if (curMember == null){
+            System.out.println("로그인이 필요합니다");
+            return "redirect:/member/login";
+        }
+        if (postService.check(postId, curMember.getId())){
+            Post post = postRepository.findOne(postId);
+            model.addAttribute("post", post);
+            return "post/modifyForm";
+        }
+
+        return "redirect:/";
+    }
+
+    @PostMapping("/posts/{postId}/modify")
+    public String modifyPost(@PathVariable(name = "postId") Long postId, @ModelAttribute(name = "postDto") PostDto postDto){
+        postService.update(postId, postDto.getTitle(), postDto.getContent());
+        return "redirect:/";
     }
 }

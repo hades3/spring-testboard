@@ -23,8 +23,6 @@ public class Post extends Date {
 
     private String title;
 
-    private String password;
-
     private String content;
 
     private int views;
@@ -39,7 +37,6 @@ public class Post extends Date {
     public static Post createPost(PostDto postDto, Member member){
         Post post = new Post();
         post.setTitle(postDto.getTitle());
-        post.setPassword(postDto.getPassword());
         post.setContent(postDto.getContent());
         post.setViews(0);
         LocalDateTime now = LocalDateTime.now();
@@ -48,4 +45,5 @@ public class Post extends Date {
         post.setMember(member);
         return post;
     }
+
 }
